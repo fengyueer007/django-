@@ -1,24 +1,19 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+
+from users.models import User
 # Create your views here.
 
-def login(request):
+def register(request):
     # 注册页面内容
-    html = """
-            <html>
-                <head>
-                    <title>注册页面</title>
-                </head>
-                <body>
-                    <form method='post' action='/register/'>
-                        username：<input type='text' name='username' /><br/>
-                        password：<input type='password' name='password' /><br/>
-                        <input type='submit' value='注册' />
-                    </form>
-                </body>
-            </html>
-            """
-    return HttpResponse(html)
 
-def copyText():
-    print('sdfsdf')
+    if request.method == 'GET':
+        return render(request, 'register.html')
+    else:
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        User.objects.create(username=username,password=password)
+
+        print(f'username:{username}, password:{password}')
+        return HttpResponse('成功')
